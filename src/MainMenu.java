@@ -29,7 +29,7 @@ public class MainMenu {
                     findStudent();
                 }
                 case "5"->{
-                    Student.showAllStudents();
+                    StudentTool.showAllStudents();
                 }
                 case "0"->{
                     return;
@@ -54,7 +54,7 @@ public class MainMenu {
             return;
         }
         int age = Integer.valueOf(stringAge);
-        if(Student.addStudent(name,age)==null){
+        if(StudentTool.addStudent(name,age)==null){
             return;
         }
         System.out.println("添加完成");
@@ -67,21 +67,21 @@ public class MainMenu {
             return;
         }
         int ID = Integer.valueOf(stringID);
-        if(Student.deleteStudent(ID)){
+        if(StudentTool.deleteStudent(ID)){
             System.out.println("删除成功");
             return;
         }
         System.out.println("未找到ID:"+Student.toString(ID));
     }
     private static void setStudent(){
-        System.out.println("请输入ID");
+        System.out.println("请输入ID:");
         String stringID = sr.next();
         if(!(stringID.matches("[0-9]+"))){
             System.out.println("错误ID："+stringID);
             return;
         }
         int ID = Integer.valueOf(stringID);
-        Student student = Student.getStudent(ID);
+        Student student = StudentTool.getStudent(ID);
         if(student==null){
             System.out.println("未找到ID:"+Student.toString(ID));
             return;
@@ -117,6 +117,6 @@ public class MainMenu {
             return;
         }
         int age = Integer.valueOf(stringAge);
-        Student.find(name,age);
+        StudentTool.find(name,age);
     }
 }
