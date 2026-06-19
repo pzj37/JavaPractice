@@ -32,6 +32,7 @@ public class MainMenu {
                     StudentTool.showAllStudents();
                 }
                 case "0"->{
+                    System.out.println("退出");
                     return;
                 }
                 default -> {
@@ -41,82 +42,60 @@ public class MainMenu {
         }
     }
     private static void addStudent(){
-        System.out.println("请输入名字：");
-        String name = sr.next();
-        if(name==null||name.isEmpty()||!(name.matches("[\u4e00-\u9fa5]{1,6}"))){
-            System.out.println("不可设置名字："+name);
-            return;
+        try {
+            System.out.println("请输入名字：");
+            String name = StudentTool.nameIsTrue(sr.next());
+            System.out.println("请输入年龄：");
+            int age = StudentTool.ageIsTrue(sr.nextInt());
+            StudentTool.addStudent(name, age);
+            System.out.println("添加完成");
+        } catch (RuntimeException e) {
+            System.out.println(e);
+        } catch (Exception e) {
+            System.out.println(e);
         }
-        System.out.println("请输入年龄：");
-        String stringAge = sr.next();
-        if(!(stringAge.matches("[0-9]+"))){
-            System.out.println("不可设置年龄："+stringAge);
-            return;
-        }
-        int age = Integer.valueOf(stringAge);
-        if(StudentTool.addStudent(name,age)==null){
-            return;
-        }
-        System.out.println("添加完成");
     }
     private static void deleteStudent(){
-        System.out.println("请输入ID：");
-        String stringID = sr.next();
-        if(!(stringID.matches("[0-9]+"))){
-            System.out.println("错误ID："+stringID);
-            return;
-        }
-        int ID = Integer.valueOf(stringID);
-        if(StudentTool.deleteStudent(ID)){
+        try {
+            System.out.print("请输入ID：");
+            int ID = StudentTool.idIsTrue(sr.nextInt());
+            StudentTool.deleteStudent(ID);
             System.out.println("删除成功");
-            return;
+        } catch (RuntimeException e) {
+            System.out.println(e);
+        } catch (Exception e){
+            System.out.println(e);
         }
-        System.out.println("未找到ID:"+Student.toString(ID));
     }
     private static void setStudent(){
-        System.out.println("请输入ID:");
-        String stringID = sr.next();
-        if(!(stringID.matches("[0-9]+"))){
-            System.out.println("错误ID："+stringID);
-            return;
+        try {
+            System.out.println("请输入ID:");
+            int id = StudentTool.idIsTrue(sr.nextInt());
+            Student student = StudentTool.find(id);
+            System.out.print("请输入名字：");
+            String name = StudentTool.nameIsTrue(sr.next());
+            student.setName(name);
+            System.out.println("请输入年龄：");
+            int age = StudentTool.ageIsTrue(sr.nextInt());
+            student.setAge(age);
+            System.out.println("设置完成："+student.toString());
+        } catch (RuntimeException e) {
+            System.out.println(e);
+        } catch (Exception e){
+            System.out.println(e);
         }
-        int ID = Integer.valueOf(stringID);
-        Student student = StudentTool.getStudent(ID);
-        if(student==null){
-            System.out.println("未找到ID:"+Student.toString(ID));
-            return;
-        }
-        System.out.println("请输入名字：");
-        String name = sr.next();
-        if(name==null||name.isEmpty()||!(name.matches("[\u4e00-\u9fa5]{1,6}"))){
-            System.out.println("不可设置名字："+name);
-            return;
-        }
-        student.setName(name);
-        System.out.println("请输入年龄：");
-        String stringAge = sr.next();
-        if(!(stringAge.matches("[0-9]+"))){
-            System.out.println("不可设置年龄："+stringAge);
-            return;
-        }
-        int age = Integer.valueOf(stringAge);
-        student.setAge(age);
-        System.out.println("设置完成："+student.toString());
     }
     private static void findStudent(){
-        System.out.println("请输入名字：");
-        String name = sr.next();
-        if(name==null||name.isEmpty()||!(name.matches("[\u4e00-\u9fa5]{1,6}"))){
-            System.out.println("不可设置名字："+name);
-            return;
+        try {
+            System.out.print("请输入名字：");
+            String name = StudentTool.nameIsTrue(sr.next());
+            System.out.println("请输入年龄：");
+            int age = StudentTool.ageIsTrue(sr.nextInt());
+            StudentTool.find(name, age);
+        } catch (RuntimeException e) {
+            System.out.println(e);
+        } catch (Exception e){
+            System.out.println(e);
         }
-        System.out.println("请输入年龄：");
-        String stringAge = sr.next();
-        if(!(stringAge.matches("[0-9]+"))){
-            System.out.println("不可设置年龄："+stringAge);
-            return;
-        }
-        int age = Integer.valueOf(stringAge);
-        StudentTool.find(name,age);
     }
 }
