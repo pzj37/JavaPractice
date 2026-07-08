@@ -3,87 +3,65 @@ package StudentTool;
 import Model.Student;
 import StudentException.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class StudentTool{
+    private static ArrayList<Student> students = new ArrayList<>();
     public static void addStudent(String name, int age,int score) {
-        isMax();
-        StudentMax.max[StudentMax.Now++] = new Student(nameIsTrue(name), ageIsTrue(age),scoreIsTrue(score));
+        students.add(new Student(nameIsTrue(name), ageIsTrue(age),scoreIsTrue(score)));
     }
 
-    public static void deleteStudent(int ID){
+    public static Student deleteStudent(int ID){
         isMin();
-        int i =idFindToScore(ID);
-        System.out.println("删除了"+ StudentMax.max[i]);
-        StudentMax.max[i] =null;
-        for(int m = i;i+1<StudentMax.max.length;i++){
-                StudentMax.max[i]=StudentMax.max[i+1];
-        }
-    }
-
-    public static Student idFind(int ID) {
-        isMin();
-        for (int i = 0; i < StudentMax.max.length; i++) {
-            if (StudentMax.max[i] != null && StudentMax.max[i].getID() == ID) {
-                System.out.println(StudentMax.max[i]);
-                return StudentMax.max[i];
+        for (int i = 0;i < students.size();i++){
+            if(students.get(i).getID()==ID){
+                return students.remove(i);
             }
         }
-        throw new IdException("没找到ID：" + ID);
+        return null;
     }
-    public static int idFindToScore(int ID) {
-        isMin();
-        for (int i = 0; i < StudentMax.max.length; i++) {
-            if (StudentMax.max[i] != null && StudentMax.max[i].getID() == ID) {
-                System.out.println(StudentMax.max[i]);
-                return i;
+
+    public static Student idFind(int ID){
+        for (Student student:students){
+            if(student.getID()==ID){
+                return student;
             }
         }
-        throw new IdException("没找到ID：" + ID);
+        return null;
     }
 
-
-    public static void nameAndAgeFind(String name,int age) {
+    public static Student[] nameAndAgeFind(String name,int age) {
         isMin();
-        for(Student student:StudentMax.max){
+        ArrayList<Student> arr = new ArrayList<>();
+        for(Student student:students){
             if(student!=null&&student.getName().equals(name)&&student.getAge()==age){
-                System.out.println(student);
+                arr.add(student);
             }
         }
+        return arr.toArray(new Student[0]);
     }
 
     public static void showAllStudents(){
         isMin();
         System.out.println("全部学生：");
-        for (int i = 0;i<StudentMax.Now;i++) {
-            for (int j=i;j-1>=0&&StudentMax.max[j].getScore()>StudentMax.max[j-1].getScore();j--) {
-                Student next = StudentMax.max[j];
-                StudentMax.max[j] = StudentMax.max[j-1];
-                StudentMax.max[j-1] = next;
-            }
-        }
-        for (Student student:StudentMax.max) {
-            if(student!=null) System.out.println(student);
+        students.sort((s1,s2)->s2.getScore()-s1.getScore());
+        for (Student student:students) {
+            System.out.println(student);
         }
     }
 
     public static double scgScore(){
         isMin();
         double falst = 0;
-        for (int i = 0; i < StudentMax.Now; i++) {
-            falst+=StudentMax.max[i].getScore();
+        for (Student student : students) {
+            falst += student.getScore();
         }
-        return falst/StudentMax.Now;
+        return falst/students.size();
     }
 
     public static void isMin(){
-        if(StudentMax.Now == 0){
+        if(students.isEmpty()){
             throw new MinException("你还没有学生");
-        }
-    }
-
-    public static void isMax(){
-        if(StudentMax.Now==StudentMax.max.length){
-            throw new MaxException("人满了");
         }
     }
 
@@ -114,10 +92,5 @@ public class StudentTool{
             throw new IdException("错误ID："+id);
         }
         return id;
-    }
-
-    private static final class StudentMax{
-        static int Now;
-        static Student[] max = new Student[100];
     }
 }

@@ -2,6 +2,8 @@ package ui;
 
 import Model.Student;
 import StudentTool.*;
+
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class MainMenu {
@@ -73,8 +75,8 @@ public class MainMenu {
         try {
             System.out.print("请输入ID：");
             int ID = StudentTool.idIsTrue(sr.nextInt());
-            StudentTool.deleteStudent(ID);
-            System.out.println("删除成功");
+            Student deffest = StudentTool.deleteStudent(ID);
+            System.out.println(deffest==null?"删除失败":"删除成功"+deffest);
         } catch (RuntimeException e) {
             System.out.println(e);
         } catch (Exception e){
@@ -86,6 +88,10 @@ public class MainMenu {
             System.out.println("请输入ID:");
             int id = StudentTool.idIsTrue(sr.nextInt());
             Student student = StudentTool.idFind(id);
+            if(student==null){
+                System.out.println("没找到ID:"+id);
+                return;
+            }
             System.out.print("请输入名字：");
             String name = StudentTool.nameIsTrue(sr.next());
             student.setName(name);
@@ -95,7 +101,7 @@ public class MainMenu {
             System.out.println("请输入成绩：");
             int score = StudentTool.scoreIsTrue(sr.nextInt());
             student.setScore(score);
-            System.out.println("设置完成："+student.toString());
+            System.out.println("设置完成："+student);
         } catch (RuntimeException e) {
             System.out.println(e);
         } catch (Exception e){
@@ -108,7 +114,7 @@ public class MainMenu {
             String name = StudentTool.nameIsTrue(sr.next());
             System.out.println("请输入年龄：");
             int age = StudentTool.ageIsTrue(sr.nextInt());
-            StudentTool.nameAndAgeFind(name, age);
+            System.out.println(Arrays.toString(StudentTool.nameAndAgeFind(name, age)));
         } catch (RuntimeException e) {
             System.out.println(e);
         } catch (Exception e){
